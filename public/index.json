@@ -1,0 +1,51 @@
+{
+    "comment" : "you have experienced success",
+    "startingSlideID" : "slide0",
+    "slides" : [
+        {
+            "id" : "slide0",
+            "title" : "Slide 0",
+            "linkLabel" : "home",
+            "elements" : [
+                {
+                    "type" : "text",
+                    "data" : {
+                        "content": "This is slide 0"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "bottom": [ "slide2" ]
+            }
+        },
+        {
+            "id" : "slide1",
+            "title" : "Slide 1",
+            "elements" : [
+                {
+                    "type" : "text",
+                    "data" : {
+                        "value": "This is slide 1"
+                    }
+                }
+            ]
+        },
+        {
+            "id" : "slide2",
+            "title" : "Slide 2",
+            "elements" : [
+                {
+                    "type" : "text",
+                    "data" : {
+                        "value": "This is slide 2"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "top": [ "slide0" ]
+            }
+        }
+    ]
+}
