@@ -1,8 +1,125 @@
 @import "vars.less";
 @import "mixins.less";
 
-.link-bar {
-  .link {
+@linkBarThickness: 50px;
+@linkMargin: 10px;
+@linkPadding: 15px;
 
+.link-bar {
+  position: fixed;
+  z-index: 1000;
+  background: lightgray;
+  color: black;
+  transition: transform @transDurationFast ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:after {
+    position: fixed;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba( 255, 255, 255, 0 );
+    z-index: -1;
+  }
+  .link {
+    border: 1px solid black;
+    background: transparent;
+    display : inline-block;
+    color: black;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: calc( @linkBarThickness - 4px );
+    user-select: none;
+    cursor: pointer;
+    &:hover {
+      background: black;
+      color: lightgray;
+    }
+  }
+  &.left {
+    left: 0;
+    top: 0;
+    width: @linkBarThickness;
+    height: 100vh;
+    transform: translateX(-100%);
+    flex-direction: column;
+    z-index: 1;
+    &:after {
+      transform: translateX(20%);
+    }
+    .link{
+      margin: @linkMargin 0;
+      writing-mode: vertical-lr;
+      width: @linkBarThickness;
+      padding: @linkPadding 0;
+    }
+    &.displayed {
+      transition: transform @transDurationFast ease-in-out;
+      transform: translateX(0);
+    }
+  }
+  &.right {
+    right: 0;
+    top: 0;
+    width: @linkBarThickness;
+    height: 100vh;
+    transform: translateX(100%);
+    flex-direction: column;
+    z-index: 1;
+    &:after {
+      transform: translateX(-40%);
+    }
+    .link{
+      margin: @linkMargin 0;
+      writing-mode: vertical-lr;
+      padding: @linkPadding 0;
+    }
+    &.displayed {
+      transition: transform @transDurationFast ease-in-out;
+      transform: translateX(0);
+    }
+  }
+  &.top {
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: @linkBarThickness;
+    transform: translateY(-100%);
+    text-align: center;
+    z-index: 2;
+    &:after {
+      transform: translateY(20%);
+    }
+    .link{
+      margin: 0 @linkMargin;
+      padding: 0 @linkPadding;
+    }
+    &.displayed {
+      transition: transform @transDurationFast ease-in-out;
+      transform: translateY(0);
+    }
+  }
+  &.bottom {
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: @linkBarThickness;
+    transform: translateY(100%);
+    text-align: center;
+    z-index: 2;
+    &:after {
+      transform: translateY(-40%);
+    }
+    .link{
+      margin: 0 @linkMargin;
+      padding: 0 @linkPadding;
+    }
+    &.displayed {
+      transition: transform @transDurationFast ease-in-out;
+      transform: translateY(0);
+    }
   }
 }

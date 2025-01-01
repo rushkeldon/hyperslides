@@ -10,12 +10,12 @@ export default function App({ data }) {
   const firstSlide : Slide = data.slides.find( slide => slide.id === data.startingSlideID );
   const [currentSlide, setCurrentSlide ] = useState<Slide>( firstSlide );
   const [nextSlide, setNextSlide ] = useState<Slide | null>( null );
-  const [nextSlideFromDirection, setNextSlideFromDirection] = useState<FromDirections>( FromDirections.NONE );
-  const [isNextSlideReady, setIsNextSlideReady] = useState<boolean>( false );
   const [isInTransition, setIsInTransition] = useState<boolean>( false );
   const signalTower = useSignalTower();
 
   const nextSlideRequested = (slideID: string, fromDirection: FromDirections, isFromHistory: boolean = false) => {
+    console.log( 'nextSlideRequested:', slideID, fromDirection, isFromHistory );
+
     if (isFromHistory) {
       // pop the current slide off the history stack and navigate to it
       const previousSlide = history.state?.slideID;
@@ -31,14 +31,13 @@ export default function App({ data }) {
       history.pushState({ slideID, fromDirection }, '', `#${slideID}`);
       setNextSlide(slide);
     }
-    setNextSlideFromDirection(fromDirection);
+    // setNextSlideFromDirection(fromDirection);
     setIsInTransition(true);
   };
 
   const slidesTransitioned = () => {
     setCurrentSlide( nextSlide! );
     setNextSlide( null );
-    setIsNextSlideReady( false );
     setIsInTransition( false );
   };
 
@@ -78,20 +77,49 @@ export default function App({ data }) {
     };
   }, []);
 
+  /* move linkbars to the body
+  useEffect(() => {
+    const linkBars = document.querySelectorAll('.link-bar');
+    linkBars.forEach(linkBar => {
+      document.body.appendChild(linkBar);
+    });
+  }, [] );
+   */
+
   return (
     <>
-      <LinkBar classNames={`${FromDirections.LEFT}${isInTransition ? ' offstage' : ''}`} fromDirection={FromDirections.LEFT} links={currentSlide?.links?.left}/>
-      <LinkBar classNames={`${FromDirections.RIGHT}${isInTransition ? ' offstage' : ''}`} fromDirection={FromDirections.RIGHT} links={currentSlide?.links?.right}/>
-      <LinkBar classNames={`${FromDirections.TOP}${isInTransition ? ' offstage' : ''}`} fromDirection={FromDirections.TOP} links={currentSlide?.links?.top}/>
-      <LinkBar classNames={`${FromDirections.BOTTOM}${isInTransition ? ' offstage' : ''}`} fromDirection={FromDirections.BOTTOM} links={currentSlide?.links?.bottom}/>
-      <SlideComponent classNames={'onstage'} slide={ currentSlide } />
-      { Boolean( nextSlide ) &&
-        <SlideComponent
-          classNames={`${isNextSlideReady ? nextSlideFromDirection : 'offstage'}`}
-          slide={ nextSlide as Slide }
-          onTransitionEnd={slidesTransitioned}
-          setIsNextSlideReady={setIsNextSlideReady}
-        /> }
+      <LinkBar
+        key="linkBarLeft"
+        classNames={`${FromDirections.LEFT}${isInTransition ? ' dismissed' : ''}`}
+        fromDirection={FromDirections.LEFT}
+        links={currentSlide?.links?.left}
+      />
+      <LinkBar
+        key="linkBarRight"
+        classNames={`${FromDirections.RIGHT}${isInTransition ? ' dismissed' : ''}`}
+        fromDirection={FromDirections.RIGHT}
+        links={currentSlide?.links?.right}
+      />
+      <LinkBar
+        key="linkBarTop"
+        classNames={`${FromDirections.TOP}${isInTransition ? ' dismissed' : ''}`}
+        fromDirection={FromDirections.TOP}
+        links={currentSlide?.links?.top}
+      />
+      <LinkBar
+        key="linkBarBottom"
+        classNames={`${FromDirections.BOTTOM}${isInTransition ? ' dismissed' : ''}`}
+        fromDirection={FromDirections.BOTTOM}
+        links={currentSlide?.links?.bottom}
+      />
+      {
+        data.slides.map( (slide, index ) => <SlideComponent
+          key={index}
+          classNames={`${currentSlide === slide ? 'onstage' : 'offstage' }`}
+          slide={ slide }
+          onTransitionEnd={ slidesTransitioned }
+        /> )
+      }
     </>
   )
 }

@@ -27,7 +27,7 @@ function logFactory( levelKey: string ) {
 }
 
 function boundLogger( logLevel: string ) {
-  return window.console[ logLevel.toLowerCase() ].bind( window.console, '[hypercardz]' );
+  return window.console[ logLevel.toLowerCase() ].bind( window.console, '[hyperslides]' );
 }
 
 export function setLevel( newLevel: number ) {

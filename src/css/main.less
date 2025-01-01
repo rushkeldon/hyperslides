@@ -16,9 +16,7 @@ body, html {
   padding: 0px;
   min-width : 100%;
   min-height : 100%;
-  overflow : hidden;
   font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  transform: translate3d(0, 0, 0);
 }
 
 *, *:before, *:after {
@@ -31,47 +29,15 @@ body, html {
   outline : none !important;
 }
 
-#root {
-  .FullScreen();
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
 
-.slide {
-  transition: transform @transDuration ease-in-out;
-  .FullScreen();
-  transform: translateX(0);
-  overflow: scroll;
-
-  /* Hide scrollbars */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.offstage {
+*::-webkit-scrollbar { /* WebKit browsers */
   display: none;
 }
 
-.offstage-right {
-  transform: translateX(100%);
-}
-
-.offstage-left {
-  transform: translateX(-100%);
-}
-
-.offstage-top {
-  transform: translateY(-100%);
-}
-
-.offstage-bottom {
-  transform: translateY(100%);
-}
-
-.slide-element {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
+#root {
+  .FullScreen();
 }

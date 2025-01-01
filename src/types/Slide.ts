@@ -36,7 +36,7 @@ export type SlideLinks = {
 };
 
 export type Slide = {
-  id: string | number;
+  id: string;
   title?: string;
   linkLabel?: string;
   elements: SlideElement[];

@@ -10,18 +10,21 @@
                 {
                     "type" : "text",
                     "data" : {
-                        "content": "This is slide 0"
+                        "value": "Welcome to Hyperslides!"
                     }
                 }
             ],
             "links": {
-                "right": [ "slide1" ],
-                "bottom": [ "slide2" ]
+                "left": [ "monkey", "fuddle" ],
+                "right": [ "right", "on" ],
+                "top": [ "slide1", "slide ∞" ],
+                "bottom": [ "slide2", "keldon" ]
             }
         },
         {
             "id" : "slide1",
             "title" : "Slide 1",
+            "linkLabel" : "Amazing Slide 1!",
             "elements" : [
                 {
                     "type" : "text",
@@ -34,11 +37,86 @@
         {
             "id" : "slide2",
             "title" : "Slide 2",
+            "linkLabel" : "Click for Slide 2",
             "elements" : [
                 {
                     "type" : "text",
                     "data" : {
                         "value": "This is slide 2"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "top": [ "slide0" ]
+            }
+        },
+        {
+            "id" : "slide3",
+            "title" : "Slide 3",
+            "linkLabel" : "Spiral9 & YouTube Glow Staff",
+            "elements" : [
+                {
+                    "type" : "iframe",
+                    "data" : {
+                        "url": "https://spiral9.com"
+                    }
+                },
+                {
+                    "type" : "youtube",
+                    "data" : {
+                        "id": "R9FWmaJw-Q4"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "top": [ "slide0" ]
+            }
+        },
+        {
+            "id" : "slide4",
+            "title" : "Slide 4",
+            "linkLabel" : "Vimeo Yoga Example",
+            "elements" : [
+                {
+                    "type" : "vimeo",
+                    "data" : {
+                        "id": "516660337"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "top": [ "slide0" ]
+            }
+        },
+        {
+            "id" : "slide5",
+            "title" : "Slide 5",
+            "linkLabel" : "The Prophet",
+            "elements" : [
+                {
+                    "type" : "iframe",
+                    "data" : {
+                        "url": "https://spiral9.com/the-prophet"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "slide1" ],
+                "top": [ "slide0" ]
+            }
+        },
+        {
+            "id" : "slide6",
+            "title" : "Slide 6",
+            "linkLabel" : "Pyramid of White Supremacy",
+            "elements" : [
+                {
+                    "type" : "iframe",
+                    "data" : {
+                        "url": "https://docs.google.com/presentation/d/1-HxFKhUQD-iPtwd_4YbnO9FYpEZXgwRKU-rOg7OOk1k/edit?usp=sharing"
                     }
                 }
             ],

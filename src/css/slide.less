@@ -1,0 +1,76 @@
+@import "vars.less";
+@import "mixins.less";
+
+.slide {
+  .FullScreen();
+  position: static; // TODO: remove this
+  z-index: 1;
+  transform: translateX(0);
+  overflow: scroll;
+  gap: 0px;
+
+  /* Hide scrollbars */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  .slide-element {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    width: calc( 100vw / var( --element-count ) );
+    iframe {
+      height: 100%;
+      width: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+    &.text {
+      .FullScreen();
+      font-size: 40px;
+      font-weight: 700;
+      text-align: center;
+      border: 1px solid rebeccapurple;
+      p {
+        height: 40px;
+        line-height: 40px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.onstage {
+  transition: transform @transDuration ease-in-out;
+}
+
+.offstage {
+  display: block;// none;
+}
+
+.offstage-right {
+  transition: transform @transDuration ease-in-out;
+  transform: translateX(100%);
+}
+
+.offstage-left {
+  transition: transform @transDuration ease-in-out;
+  transform: translateX(-100%);
+}
+
+.offstage-top {
+  transition: transform @transDuration ease-in-out;
+  transform: translateY(-100%);
+}
+
+.offstage-bottom {
+  transition: transform @transDuration ease-in-out;
+  transform: translateY(100%);
+}
