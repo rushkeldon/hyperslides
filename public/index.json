@@ -15,10 +15,10 @@
                 }
             ],
             "links": {
-                "left": [ "monkey", "fuddle" ],
-                "right": [ "right", "on" ],
-                "top": [ "slide1", "slide ∞" ],
-                "bottom": [ "slide2", "keldon" ]
+                "left": [ "slide6" ],
+                "right": [ "slide5" ],
+                "top": [ "slide1", "slide2" ],
+                "bottom": [ "slide3", "slide4" ]
             }
         },
         {
@@ -116,7 +116,7 @@
                 {
                     "type" : "iframe",
                     "data" : {
-                        "url": "https://docs.google.com/presentation/d/1-HxFKhUQD-iPtwd_4YbnO9FYpEZXgwRKU-rOg7OOk1k/edit?usp=sharing"
+                        "url": "https://docs.google.com/presentation/d/1-HxFKhUQD-iPtwd_4YbnO9FYpEZXgwRKU-rOg7OOk1k/present"
                     }
                 }
             ],

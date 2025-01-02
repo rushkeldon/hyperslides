@@ -1,16 +1,30 @@
 import '../css/app.less';
-import { useEffect, useState } from 'react';
+import { TransitionEvent, useEffect, useState } from 'react';
 import { useSignalTower } from '../hooks/useSignalTower.ts';
 import { FromDirections, Slide } from '../types/Slide.ts';
 import LinkBar from './LinkBar.tsx';
 import SlideComponent from './SlideComponent.tsx';
 
-export default function App({ data }) {
+function getOppositeDirection( direction: FromDirections ) : FromDirections {
+  switch( direction ) {
+    case FromDirections.LEFT:
+      return FromDirections.RIGHT;
+    case FromDirections.RIGHT:
+      return FromDirections.LEFT;
+    case FromDirections.TOP:
+      return FromDirections.BOTTOM;
+    case FromDirections.BOTTOM:
+      return FromDirections.TOP;
+    default:
+      return FromDirections.NONE;
+  }
+}
 
+export default function App({ data }) {
   const firstSlide : Slide = data.slides.find( slide => slide.id === data.startingSlideID );
-  const [currentSlide, setCurrentSlide ] = useState<Slide>( firstSlide );
+  const [currentSlide, setCurrentSlide ] = useState<Slide | null>( firstSlide );
   const [nextSlide, setNextSlide ] = useState<Slide | null>( null );
-  const [isInTransition, setIsInTransition] = useState<boolean>( false );
+  const [nextSlideFromDirection, setNextSlideFromDirection] = useState<FromDirections>( FromDirections.NONE );
   const signalTower = useSignalTower();
 
   const nextSlideRequested = (slideID: string, fromDirection: FromDirections, isFromHistory: boolean = false) => {
@@ -21,7 +35,8 @@ export default function App({ data }) {
       const previousSlide = history.state?.slideID;
       if (previousSlide) {
         const slide = data.slides.find(slide => slide.id === previousSlide);
-        setCurrentSlide(slide);
+        setNextSlide(slide);
+        setNextSlideFromDirection(fromDirection);
       } else {
         history.back();
       }
@@ -30,17 +45,31 @@ export default function App({ data }) {
       const slide = data.slides.find(slide => slide.id === slideID);
       history.pushState({ slideID, fromDirection }, '', `#${slideID}`);
       setNextSlide(slide);
+      setNextSlideFromDirection(fromDirection);
     }
     // setNextSlideFromDirection(fromDirection);
-    setIsInTransition(true);
   };
 
-  const slidesTransitioned = () => {
-    setCurrentSlide( nextSlide! );
-    setNextSlide( null );
-    setIsInTransition( false );
+  const currentSlideTransitioned = (e : TransitionEvent) => {
+    console.log( 'currentSlideTransitioned. e.target:', e.target );
+
+    /*
+    const trashbin = document.querySelector( '.trashbin' );
+    if( !trashbin ) return;
+    trashbin.appendChild( e.target as Node );
+    trashbin.innerHTML = '';
+     */
+
+    if( ( e.target as HTMLDivElement ).getAttribute( 'data-id' ) === currentSlide?.id ) {
+      console.log( 'transitioned slide is currentSlide' );
+      setNextSlide( null );
+      setCurrentSlide( nextSlide );
+    } else {
+      console.log( 'transitioned slide is NOT currentSlide' );
+    }
   };
 
+  // one time add signal and event listeners
   useEffect(()=> {
     signalTower.slideRequested.add( nextSlideRequested );
 
@@ -77,49 +106,56 @@ export default function App({ data }) {
     };
   }, []);
 
-  /* move linkbars to the body
+  // slide transition
   useEffect(() => {
-    const linkBars = document.querySelectorAll('.link-bar');
-    linkBars.forEach(linkBar => {
-      document.body.appendChild(linkBar);
-    });
-  }, [] );
-   */
+    console.log( `slide transition useEffect: currentSlide.id : ${currentSlide?.id}, nextSlide.id : ${nextSlide?.id}` );
+    if( nextSlide ){
+      const nextSlideDiv = document.querySelector(`.slide[data-id="${nextSlide.id}"]`);
+      if( nextSlideDiv ) {
+        const currentSlideDiv = document.querySelector(`.slide[data-id="${currentSlide?.id}"]`);
+        currentSlideDiv?.classList.add(`offstage-${getOppositeDirection(nextSlideFromDirection)}`);
+        nextSlideDiv.classList.remove(`offstage-${nextSlideFromDirection}`);
+      }
+    }
+  }, [currentSlide, nextSlide] );
 
   return (
     <>
       <LinkBar
         key="linkBarLeft"
-        classNames={`${FromDirections.LEFT}${isInTransition ? ' dismissed' : ''}`}
+        classNames={FromDirections.LEFT}
         fromDirection={FromDirections.LEFT}
         links={currentSlide?.links?.left}
       />
       <LinkBar
         key="linkBarRight"
-        classNames={`${FromDirections.RIGHT}${isInTransition ? ' dismissed' : ''}`}
+        classNames={FromDirections.RIGHT}
         fromDirection={FromDirections.RIGHT}
         links={currentSlide?.links?.right}
       />
       <LinkBar
         key="linkBarTop"
-        classNames={`${FromDirections.TOP}${isInTransition ? ' dismissed' : ''}`}
+        classNames={FromDirections.TOP}
         fromDirection={FromDirections.TOP}
         links={currentSlide?.links?.top}
       />
       <LinkBar
         key="linkBarBottom"
-        classNames={`${FromDirections.BOTTOM}${isInTransition ? ' dismissed' : ''}`}
+        classNames={FromDirections.BOTTOM}
         fromDirection={FromDirections.BOTTOM}
         links={currentSlide?.links?.bottom}
       />
-      {
-        data.slides.map( (slide, index ) => <SlideComponent
-          key={index}
-          classNames={`${currentSlide === slide ? 'onstage' : 'offstage' }`}
-          slide={ slide }
-          onTransitionEnd={ slidesTransitioned }
-        /> )
+      { Boolean( currentSlide ) && <SlideComponent
+        key={ currentSlide?.id }
+        slide={ currentSlide as Slide }
+        onTransitionEnd={ currentSlideTransitioned }
+      />
       }
+      { Boolean( nextSlide ) && <SlideComponent
+        key={ nextSlide?.id }
+        slide={ nextSlide as Slide }
+        classNames={ `offstage-${nextSlideFromDirection}` }
+      /> }
     </>
   )
 }

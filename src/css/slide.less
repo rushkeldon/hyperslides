@@ -2,13 +2,17 @@
 @import "mixins.less";
 
 .slide {
-  .FullScreen();
-  position: static; // TODO: remove this
-  z-index: 1;
-  transform: translateX(0);
-  overflow: scroll;
-  gap: 0px;
-
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  .smooth();
+  overflow: hidden;
+  .TransAllCubic(@transDuration);
+  border: 1px solid black;
+  // on stage position
+  left : 0;
+  top : 0;
+  opacity: 1;
   /* Hide scrollbars */
   &::-webkit-scrollbar {
     display: none;
@@ -16,9 +20,10 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   .slide-element {
-    position: relative;
+    position: absolute;
+    top: 0;
     display: inline-block;
-    height: 100%;
+    height: 100vw;
     width: calc( 100vw / var( --element-count ) );
     iframe {
       height: 100%;
@@ -28,49 +33,48 @@
       margin: 0;
     }
     &.text {
-      .FullScreen();
-      font-size: 40px;
-      font-weight: 700;
-      text-align: center;
-      border: 1px solid rebeccapurple;
       p {
-        height: 40px;
-        line-height: 40px;
         position: absolute;
-        top: 0;
-        bottom: 0;
-        margin: auto;
+        top: 50vh;
+        left: 0;
+        font-size: 40px;
+        font-weight: 700;
+        transform: translateY(-50%);
         text-align: center;
         width: 100%;
+        margin: 0;
       }
     }
   }
-}
 
-.onstage {
-  transition: transform @transDuration ease-in-out;
-}
+  &.offstage-none {
+    .TransAllCubic(@transDuration);
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
 
-.offstage {
-  display: block;// none;
-}
+  &.offstage-right {
+    .TransAllCubic(@transDuration);
+    left : 100vw;
+    top : 0;
+  }
 
-.offstage-right {
-  transition: transform @transDuration ease-in-out;
-  transform: translateX(100%);
-}
+  &.offstage-left {
+    .TransAllCubic(@transDuration);
+    left: -100vw;
+    top: 0;
+  }
 
-.offstage-left {
-  transition: transform @transDuration ease-in-out;
-  transform: translateX(-100%);
-}
+  &.offstage-top {
+    .TransAllCubic(@transDuration);
+    left: 0;
+    top: -100vh;
+  }
 
-.offstage-top {
-  transition: transform @transDuration ease-in-out;
-  transform: translateY(-100%);
-}
-
-.offstage-bottom {
-  transition: transform @transDuration ease-in-out;
-  transform: translateY(100%);
+  &.offstage-bottom {
+    .TransAllCubic(@transDuration);
+    left: 0;
+    top: 100vh;
+  }
 }

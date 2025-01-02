@@ -17,6 +17,7 @@ body, html {
   min-width : 100%;
   min-height : 100%;
   font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow: hidden;
 }
 
 *, *:before, *:after {
@@ -39,5 +40,14 @@ body, html {
 }
 
 #root {
-  .FullScreen();
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.trashbin {
+  display: none;
 }

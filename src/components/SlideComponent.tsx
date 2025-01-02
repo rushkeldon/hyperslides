@@ -1,15 +1,15 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, TransitionEvent } from 'react';
 import { Slide, SlideDataIframe, SlideDataText, SlideDataVimeo, SlideDataYouTube } from '../types/Slide.ts';
 import '../css/slide.less';
 
 type SlideComponentProps = {
   classNames?: string;
   slide: Slide;
-  onTransitionEnd?: () => void;
+  onTransitionEnd?: (e : TransitionEvent) => void;
 }
 
 export default function SlideComponent( {
-  classNames,
+  classNames = '',
   slide,
   onTransitionEnd
 } : SlideComponentProps ) {
@@ -19,8 +19,9 @@ export default function SlideComponent( {
 
   return <div
     data-id={slide.id}
-    className={`slide ${classNames}`}
+    className={`slide ${ classNames ? classNames : '' }`}
     style={{ '--element-count': elementCount } as CSSProperties}
+    onTransitionEnd={ onTransitionEnd }
   >
     {
       slide.elements.map( (element, index) => {
