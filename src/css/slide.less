@@ -2,28 +2,21 @@
 @import "mixins.less";
 
 .slide {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  .smooth();
-  overflow: hidden;
-  .TransAllCubic(@transDuration);
-  border: 1px solid black;
-  // on stage position
-  left : 0;
-  top : 0;
+  .FullScreen( true, true );
+  .TransAllCubic( @transDuration );
+  border: 0.5px solid rgba( 255, 255, 255, 0.4 );
   opacity: 1;
+  overflow: scroll;
   /* Hide scrollbars */
   &::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  white-space: nowrap;
   .slide-element {
-    position: absolute;
-    top: 0;
     display: inline-block;
-    height: 100vw;
+    height: 100vh;
     width: calc( 100vw / var( --element-count ) );
     iframe {
       height: 100%;
@@ -33,47 +26,46 @@
       margin: 0;
     }
     &.text {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
       p {
         position: absolute;
         top: 50vh;
         left: 0;
+        width: 100%;
+        transform: translateY(-50%);
         font-size: 40px;
         font-weight: 700;
-        transform: translateY(-50%);
         text-align: center;
-        width: 100%;
         margin: 0;
       }
     }
   }
 
   &.offstage-none {
-    .TransAllCubic(@transDuration);
     opacity: 0;
     top: 0;
     left: 0;
   }
 
   &.offstage-right {
-    .TransAllCubic(@transDuration);
     left : 100vw;
     top : 0;
   }
 
   &.offstage-left {
-    .TransAllCubic(@transDuration);
     left: -100vw;
     top: 0;
   }
 
   &.offstage-top {
-    .TransAllCubic(@transDuration);
     left: 0;
     top: -100vh;
   }
 
   &.offstage-bottom {
-    .TransAllCubic(@transDuration);
     left: 0;
     top: 100vh;
   }

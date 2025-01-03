@@ -2,11 +2,9 @@
 @import "mixins.less";
 
 body, html {
-  position : absolute;
+  .FullScreen(true);
   margin : 0px;
-  left : 0px;
   right : 0px;
-  top : 0px;
   bottom : 0px;
   width : 100vw;
   height : 100vh;
@@ -28,9 +26,6 @@ body, html {
   scroll-behavior: smooth;
   font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif;
   outline : none !important;
-}
-
-* {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
@@ -40,11 +35,7 @@ body, html {
 }
 
 #root {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
+  .FullScreen(true);
   overflow: hidden;
 }
 

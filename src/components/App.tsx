@@ -1,4 +1,3 @@
-import '../css/app.less';
 import { TransitionEvent, useEffect, useState } from 'react';
 import { useSignalTower } from '../hooks/useSignalTower.ts';
 import { FromDirections, Slide } from '../types/Slide.ts';
@@ -21,10 +20,11 @@ function getOppositeDirection( direction: FromDirections ) : FromDirections {
 }
 
 export default function App({ data }) {
-  const firstSlide : Slide = data.slides.find( slide => slide.id === data.startingSlideID );
+  const firstSlide : Slide = data.slides.find( ( slide : Slide ) => slide.id === data.startingSlideID );
   const [currentSlide, setCurrentSlide ] = useState<Slide | null>( firstSlide );
   const [nextSlide, setNextSlide ] = useState<Slide | null>( null );
   const [nextSlideFromDirection, setNextSlideFromDirection] = useState<FromDirections>( FromDirections.NONE );
+  const [shouldSlidesTransition, setShouldSlidesTransition] = useState<boolean>( false );
   const signalTower = useSignalTower();
 
   const nextSlideRequested = (slideID: string, fromDirection: FromDirections, isFromHistory: boolean = false) => {
@@ -34,7 +34,7 @@ export default function App({ data }) {
       // pop the current slide off the history stack and navigate to it
       const previousSlide = history.state?.slideID;
       if (previousSlide) {
-        const slide = data.slides.find(slide => slide.id === previousSlide);
+        const slide = data.slides.find( ( slide : Slide ) => slide.id === previousSlide);
         setNextSlide(slide);
         setNextSlideFromDirection(fromDirection);
       } else {
@@ -42,7 +42,7 @@ export default function App({ data }) {
       }
     } else {
       // push the next slide to the history stack and navigate to it
-      const slide = data.slides.find(slide => slide.id === slideID);
+      const slide = data.slides.find( ( slide : Slide ) => slide.id === slideID);
       history.pushState({ slideID, fromDirection }, '', `#${slideID}`);
       setNextSlide(slide);
       setNextSlideFromDirection(fromDirection);
@@ -53,23 +53,29 @@ export default function App({ data }) {
   const currentSlideTransitioned = (e : TransitionEvent) => {
     console.log( 'currentSlideTransitioned. e.target:', e.target );
 
-    /*
-    const trashbin = document.querySelector( '.trashbin' );
-    if( !trashbin ) return;
-    trashbin.appendChild( e.target as Node );
-    trashbin.innerHTML = '';
-     */
+    if( !( e.target as HTMLDivElement ).getAttribute( 'class' )?.includes( 'offstage' ) ) return;
 
-    if( ( e.target as HTMLDivElement ).getAttribute( 'data-id' ) === currentSlide?.id ) {
-      console.log( 'transitioned slide is currentSlide' );
-      setNextSlide( null );
-      setCurrentSlide( nextSlide );
-    } else {
-      console.log( 'transitioned slide is NOT currentSlide' );
-    }
+    setNextSlide( null );
+    setCurrentSlide( nextSlide );
+    setShouldSlidesTransition( false );
   };
 
-  // one time add signal and event listeners
+  // slide transition
+  useEffect(() => {
+    console.log( `slide transition useEffect: currentSlide.id : ${currentSlide?.id}, nextSlide.id : ${nextSlide?.id}` );
+    console.log( '\tcurrentSlide :', currentSlide );
+    console.log( '\tnextSlide :', nextSlide );
+    if( currentSlide && nextSlide ) {
+      const nextSlideDiv = document.querySelector( `.slide[data-id="${nextSlide.id}"]` );
+      const currentSlideDiv = document.querySelector( `.slide[data-id="${currentSlide?.id}"]` );
+      const haveBothSlidesRendered = nextSlideDiv && currentSlideDiv;
+      if( haveBothSlidesRendered ) {
+        setShouldSlidesTransition( true );
+      }
+    }
+  }, [currentSlide, nextSlide] );
+
+  // one time useEffect : add signal and event listeners
   useEffect(()=> {
     signalTower.slideRequested.add( nextSlideRequested );
 
@@ -97,6 +103,7 @@ export default function App({ data }) {
       if (slideID) {
         nextSlideRequested(slideID, fromDirection, true);
       }
+
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -106,56 +113,54 @@ export default function App({ data }) {
     };
   }, []);
 
-  // slide transition
-  useEffect(() => {
-    console.log( `slide transition useEffect: currentSlide.id : ${currentSlide?.id}, nextSlide.id : ${nextSlide?.id}` );
-    if( nextSlide ){
-      const nextSlideDiv = document.querySelector(`.slide[data-id="${nextSlide.id}"]`);
-      if( nextSlideDiv ) {
-        const currentSlideDiv = document.querySelector(`.slide[data-id="${currentSlide?.id}"]`);
-        currentSlideDiv?.classList.add(`offstage-${getOppositeDirection(nextSlideFromDirection)}`);
-        nextSlideDiv.classList.remove(`offstage-${nextSlideFromDirection}`);
-      }
-    }
-  }, [currentSlide, nextSlide] );
 
   return (
     <>
-      <LinkBar
-        key="linkBarLeft"
-        classNames={FromDirections.LEFT}
-        fromDirection={FromDirections.LEFT}
-        links={currentSlide?.links?.left}
-      />
-      <LinkBar
-        key="linkBarRight"
-        classNames={FromDirections.RIGHT}
-        fromDirection={FromDirections.RIGHT}
-        links={currentSlide?.links?.right}
-      />
-      <LinkBar
-        key="linkBarTop"
-        classNames={FromDirections.TOP}
-        fromDirection={FromDirections.TOP}
-        links={currentSlide?.links?.top}
-      />
-      <LinkBar
-        key="linkBarBottom"
-        classNames={FromDirections.BOTTOM}
-        fromDirection={FromDirections.BOTTOM}
-        links={currentSlide?.links?.bottom}
-      />
+      { Boolean( !nextSlide && currentSlide?.links?.left ) &&
+        <LinkBar
+          key="linkBarLeft"
+          classNames={FromDirections.LEFT}
+          fromDirection={FromDirections.LEFT}
+          links={currentSlide?.links?.left}
+        />
+      }
+      { Boolean( !nextSlide && currentSlide?.links?.right ) &&
+        <LinkBar
+          key="linkBarRight"
+          classNames={FromDirections.RIGHT}
+          fromDirection={FromDirections.RIGHT}
+          links={currentSlide?.links?.right}
+        />
+      }
+      { Boolean( !nextSlide && currentSlide?.links?.top ) &&
+        <LinkBar
+          key="linkBarTop"
+          classNames={FromDirections.TOP}
+          fromDirection={FromDirections.TOP}
+          links={currentSlide?.links?.top}
+        />
+      }
+      { Boolean( !nextSlide && currentSlide?.links?.bottom ) &&
+        <LinkBar
+          key="linkBarBottom"
+          classNames={ FromDirections.BOTTOM }
+          fromDirection={ FromDirections.BOTTOM }
+          links={ currentSlide?.links?.bottom }
+        />
+      }
       { Boolean( currentSlide ) && <SlideComponent
         key={ currentSlide?.id }
         slide={ currentSlide as Slide }
+        classNames={ shouldSlidesTransition ? `offstage-${ getOppositeDirection( nextSlideFromDirection ) }` : '' }
         onTransitionEnd={ currentSlideTransitioned }
       />
       }
       { Boolean( nextSlide ) && <SlideComponent
         key={ nextSlide?.id }
         slide={ nextSlide as Slide }
-        classNames={ `offstage-${nextSlideFromDirection}` }
-      /> }
+        classNames={ shouldSlidesTransition ? '' : `offstage-${ nextSlideFromDirection }` }
+      />
+      }
     </>
   )
 }

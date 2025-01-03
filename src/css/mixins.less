@@ -1,18 +1,30 @@
 @import "vars.less";
 
+.smooth() {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+.FullScreen( @isPositioned: false, @isSmoothed: false ) {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  & when ( @isPositioned = true ) {
+    top: 0;
+    left: 0;
+  }
+
+  & when ( @isSmoothed = true ) {
+    .smooth();
+  }
+}
+
 .HardwareAccelerate() {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-}
-
-.smooth() {
-  -webkit-overflow-scrolling: touch;
-  -webkit-transform: translate3d(0, 0, 0);
-  overflow-scrolling: touch;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  transform: translate3d(0, 0, 0);
 }
 //endregion
 
