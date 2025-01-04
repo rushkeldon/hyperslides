@@ -8,27 +8,27 @@
 .link-bar {
   position: fixed;
   z-index: 1000;
-  background: lightgray;
-  color: black;
-  transition: transform @transDurationFast ease-in-out;
+  background: var(--link-bar-bg-color, lightgrey);
+  transition: transform @transDurationVeryFast ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: all;
   &:after {
     position: fixed;
-    content: '';
+    content: ' ';
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background: rgba( 255, 255, 255, 0 );
     z-index: -1;
+    pointer-events: all;
   }
   .link {
     border: 1px solid black;
-    background: transparent;
-    display : inline-block;
-    color: black;
+    background: rgba( 0, 0, 0, 0.15 );
+    color: var(--link-bar-text-color, black);
     font-weight: 700;
     font-size: 23px;
     line-height: calc( @linkBarThickness - 4px );
@@ -48,7 +48,7 @@
     flex-direction: column;
     z-index: 1;
     &:after {
-      transform: translateX(20%);
+      transform: translateX(100%);
     }
     .link{
       margin: @linkMargin 0;
@@ -70,7 +70,7 @@
     flex-direction: column;
     z-index: 1;
     &:after {
-      transform: translateX(-40%);
+      transform: translateX(-100%);
     }
     .link{
       margin: @linkMargin 0;
@@ -91,7 +91,7 @@
     text-align: center;
     z-index: 2;
     &:after {
-      transform: translateY(20%);
+      transform: translateY(100%);
     }
     .link{
       margin: 0 @linkMargin;
@@ -111,7 +111,7 @@
     text-align: center;
     z-index: 2;
     &:after {
-      transform: translateY(-80%);
+      transform: translateY(-100%);
     }
     .link{
       margin: 0 @linkMargin;

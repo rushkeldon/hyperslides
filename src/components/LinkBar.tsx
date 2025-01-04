@@ -1,14 +1,7 @@
 import '../css/linkBar.less';
-import { createRef, MouseEvent } from 'react';
+import { createRef, CSSProperties, MouseEvent } from 'react';
 import { useSignalTower } from '../hooks/useSignalTower.ts';
-import { FromDirections } from '../types/Slide.ts';
-
-// Extend the Window interface to include the signalTower property
-declare global {
-  interface Window {
-    signalTower: any;
-  }
-}
+import { FromDirections, Slide } from '../types/Slide.ts';
 
 type LinkBarProps = {
   classNames?: string;
@@ -22,24 +15,21 @@ export default function LinkBar({
   links,
 } : LinkBarProps) {
   const signalTower = useSignalTower();
-  window.signalTower = signalTower;
   const ref = createRef<HTMLDivElement>();
+  const { appDataReceived } = useSignalTower();
+  let appData;
+  appDataReceived.addOnce( data => appData = data );
 
   function startMouseOutMonitor(event: MouseEvent) {
     const target = event.target as HTMLDivElement;
-    let mouseX = 0;
-    let mouseY = 0;
+    let mousePoint = { x: 0, y: 0 };
 
-    function updateMouseCoords( e : any ) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    }
-
+    const updateMouseCoords = ( e : any ) => mousePoint = { x: e.clientX, y: e.clientY };
     window.addEventListener('mousemove', updateMouseCoords);
 
     function checkMouseOut() {
-      if( !mouseX && !mouseY ) return requestAnimationFrame(checkMouseOut);
-      const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
+      if( !mousePoint.x && !mousePoint.y ) return requestAnimationFrame(checkMouseOut);
+      const elementUnderMouse = document.elementFromPoint(mousePoint.x, mousePoint.y);
       if (!target.contains(elementUnderMouse) && target !== elementUnderMouse) {
         target.classList.remove('displayed');
         window.removeEventListener('mousemove', updateMouseCoords);
@@ -51,7 +41,17 @@ export default function LinkBar({
     requestAnimationFrame(checkMouseOut);
   }
 
+  function getLinkLabel(link: string) : string {
+    if( !appData ) return link;
+    const targetSlide = appData.slides.find( ( slide : Slide ) => slide.id === link );
+    return targetSlide?.linkLabel || link;
+  }
+
   return <div
+    style={{
+      '--link-bar-bg-color': appData?.style?.linkBarBGColor,
+      '--link-bar-text-color': appData?.style?.linkBarTextColor
+    } as CSSProperties}
     ref={ref}
     className={`link-bar ${classNames}`}
     onMouseOver={ (e) => {
@@ -65,13 +65,9 @@ export default function LinkBar({
         key={link}
         tabIndex={0}
         className="link"
-        onClick={ () => {
-            console.log( 'link clicked:', link, fromDirection );
-            signalTower.slideRequested.dispatch(link, fromDirection);
-          }
-        }
+        onClick={ () => signalTower.slideRequested.dispatch( link, fromDirection ) }
       >
-        {link}
+        {getLinkLabel(link)}
       </div> )
     }
   </div>;

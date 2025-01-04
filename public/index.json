@@ -1,5 +1,4 @@
 {
-    "comment" : "you have experienced success",
     "startingSlideID" : "slide0",
     "slides" : [
         {
@@ -93,13 +92,13 @@
         },
         {
             "id" : "slide5",
-            "title" : "Slide 5",
-            "linkLabel" : "The Prophet",
+            "title" : "Desert Hearts Logo Concept",
+            "linkLabel" : "Desert Hearts",
             "elements" : [
                 {
                     "type" : "iframe",
                     "data" : {
-                        "url": "https://spiral9.com/the-prophet"
+                        "url": "https://codepen.io/keldon/pen/XJrKKLg"
                     }
                 }
             ],
