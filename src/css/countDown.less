@@ -1,0 +1,105 @@
+@import "vars.less";
+@import "mixins.less";
+
+
+@property --clock-hands-position {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 100%;
+}
+
+:root {
+  --clock-hands-position: 100%;
+}
+
+.countdown-label {
+  text-align: center;
+}
+
+.countdown-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 130px;
+  margin: 0 auto;
+  .btn-cancel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: translateX(238%);
+    z-index: 3;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    &:after {
+      content: '\2716';
+      font-weight: lighter;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: center;
+      display: inline-block;
+      user-select: none;
+    }
+    &:hover {
+      &:after {
+        color : red;
+      }
+    }
+  }
+  .countdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    --clock-hands-position: 100%;
+    --gradient-length: 1%;
+
+    -webkit-mask-image: conic-gradient(
+      black var(--clock-hands-position),
+      transparent calc(var(--clock-hands-position) + var(--gradient-length)),
+      transparent
+    );
+
+    transition: --clock-hands-position var( --countdown-duration, 5s ) linear;
+
+    &.counting {
+      --clock-hands-position: calc(-1 * var(--gradient-length));
+    }
+
+    &.resetting {
+      transition: none;
+    }
+
+    svg {
+      .st0 {
+        fill: #fff;
+      }
+    }
+  }
+
+  .countdown-timer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    z-index: 2;
+    pointer-events: none;
+    user-select: none;
+    color : white;
+    font-size : 40px;
+    text-align: center;
+    font-weight: 800;
+    line-height: 100px;
+    border-radius: 50%;
+    background: transparent;
+  }
+}

@@ -1,4 +1,6 @@
 {
+    "title" : "",
+    "icon" : "",
     "startingSlideID" : "slide0",
     "slides" : [
         {
@@ -23,15 +25,18 @@
         {
             "id" : "slide1",
             "title" : "Slide 1",
-            "linkLabel" : "Amazing Slide 1!",
+            "linkLabel" : "Spells",
             "elements" : [
                 {
                     "type" : "text",
                     "data" : {
-                        "value": "This is slide 1"
+                        "value": "Alohomora, Accio, Lumos, Nox, Expelliarmus, Stupefy, Petrificus Totalus, Wingardium Leviosa, Obliviate, Protego, Expecto Patronum, Rictusempra, Reducto, Incendio, Aguamenti, Levicorpus, Sectumsempra, Confundo, Diffindo, Ennervate, Impedimenta, Imperio, Avada Kedavra, Crucio, Episkey, Silencio, Finite Incantatem, Reparo, Morsmordre, Sonorus, Muffliato, Tarantallegra, Bombarda, Orchideous, Locomotor Mortis, Colloportus, Mobilicorpus, Portus, Lumos Maxima, Legilimens, Obliviate."
                     }
                 }
-            ]
+            ],
+            "links": {
+                "top": [ "slide0" ]
+            }
         },
         {
             "id" : "slide2",
@@ -53,7 +58,7 @@
         {
             "id" : "slide3",
             "title" : "Slide 3",
-            "linkLabel" : "Spiral9 & YouTube Glow Staff",
+            "linkLabel" : "Spiral9 & Totoro",
             "elements" : [
                 {
                     "type" : "iframe",
@@ -62,9 +67,9 @@
                     }
                 },
                 {
-                    "type" : "youtube",
+                    "type" : "iframe",
                     "data" : {
-                        "id": "R9FWmaJw-Q4"
+                        "url": "https://www.instagram.com/world_of_totoro/?hl=en"
                     }
                 }
             ],
@@ -76,12 +81,12 @@
         {
             "id" : "slide4",
             "title" : "Slide 4",
-            "linkLabel" : "Vimeo Yoga Example",
+            "linkLabel" : "Parametric Curves",
             "elements" : [
                 {
-                    "type" : "vimeo",
+                    "type" : "iframe",
                     "data" : {
-                        "id": "516660337"
+                        "url": "https://appcloud9.com/artifacts/parametric/"
                     }
                 }
             ],
@@ -96,9 +101,10 @@
             "linkLabel" : "Desert Hearts",
             "elements" : [
                 {
-                    "type" : "iframe",
+                    "type" : "codepen",
                     "data" : {
-                        "url": "https://codepen.io/keldon/pen/XJrKKLg"
+                        "author": "keldon",
+                        "id": "XJrKKLg"
                     }
                 }
             ],
@@ -110,12 +116,12 @@
         {
             "id" : "slide6",
             "title" : "Slide 6",
-            "linkLabel" : "Pyramid of White Supremacy",
+            "linkLabel" : "Circle of Life",
             "elements" : [
                 {
-                    "type" : "iframe",
+                    "type" : "googleslides",
                     "data" : {
-                        "url": "https://docs.google.com/presentation/d/1-HxFKhUQD-iPtwd_4YbnO9FYpEZXgwRKU-rOg7OOk1k/present"
+                        "id": "1F188AoiZcC-5_eHov9-dgtnrK8T0bjqv3nMm4KzKIdw"
                     }
                 }
             ],

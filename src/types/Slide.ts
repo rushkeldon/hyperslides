@@ -1,23 +1,13 @@
-
-export type SlideDataText = {
-  value: string;
-};
-
-export type SlideDataYouTube = {
-  id: string;
-};
-
-export type SlideDataVimeo = {
-  id: string;
-};
-
-export type SlideDataIframe = {
-  url: string;
+export type SlideData = {
+  id?: string;
+  url?: string;
+  author?: string;
+  value?: string;
 }
 
 export type SlideElement = {
-  type: 'text' | 'youtube' | 'vimeo' | 'iframe';
-  data?: SlideDataText | SlideDataYouTube | SlideDataVimeo | SlideDataIframe;
+  type: 'text' | 'youtube' | 'vimeo' | 'iframe' | 'googleslides' | 'codepen';
+  data?: SlideData;
 };
 
 export enum FromDirections {

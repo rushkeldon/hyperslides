@@ -1,0 +1,58 @@
+{
+    "title": "Ode to Totoro",
+    "icon": "https://spiral9.com/img/totoro.svg",
+    "bgColor": "white",
+    "color": "black",
+    "startingSlideID" : "home",
+    "slides" : [
+        {
+            "id" : "home",
+            "title" : "Slide 0",
+            "linkLabel" : "home",
+            "elements" : [
+                {
+                    "type" : "text",
+                    "data" : {
+                        "value": "Everyone loves Totoro!"
+                    }
+                }
+            ],
+            "links": {
+                "right": [ "portrait" ],
+                "bottom": [ "fanpage" ]
+            }
+        },
+        {
+            "id" : "portrait",
+            "title" : "A Portrait of Totoro",
+            "linkLabel" : "A Portrait",
+            "elements" : [
+                {
+                    "type" : "iframe",
+                    "data" : {
+                        "url": "https://spiral9.com/img/totoro.svg"
+                    }
+                }
+            ],
+            "links": {
+                "left": [ "home" ]
+            }
+        },
+        {
+            "id" : "fanpage",
+            "title" : "Totoro Instagram Fan Page",
+            "linkLabel" : "Fan Page",
+            "elements" : [
+                {
+                    "type" : "iframe",
+                    "data" : {
+                        "url": "https://www.instagram.com/world_of_totoro/?hl=en"
+                    }
+                }
+            ],
+            "links": {
+                "top": [ "home" ]
+            }
+        }
+    ]
+}
