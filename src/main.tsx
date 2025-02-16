@@ -41,6 +41,7 @@ async function fetchDataAndRender() {
     console.log( 'data:', data );
 
     const { appDataReceived } = useSignalTower();
+
     appDataReceived.dispatch( data );
 
     createRoot(document.getElementById('root')!).render(

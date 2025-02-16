@@ -14,10 +14,10 @@ export default function LinkBar({
   fromDirection,
   links,
 } : LinkBarProps) {
-  const signalTower = useSignalTower();
   const ref = createRef<HTMLDivElement>();
-  const { appDataReceived } = useSignalTower();
+  const { appDataReceived, slideRequested } = useSignalTower();
   let appData;
+  // since we don't expect the appData to change we can use `addOnce`
   appDataReceived.addOnce( data => appData = data );
 
   function startMouseOutMonitor(event: MouseEvent) {
@@ -65,7 +65,7 @@ export default function LinkBar({
         key={link}
         tabIndex={0}
         className="link"
-        onClick={ () => signalTower.slideRequested.dispatch( link, fromDirection ) }
+        onClick={ () => slideRequested.dispatch( link, fromDirection ) }
       >
         {getLinkLabel(link)}
       </div> )

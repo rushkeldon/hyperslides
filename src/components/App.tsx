@@ -20,12 +20,12 @@ function getOppositeDirection( direction: FromDirections ) : FromDirections {
 }
 
 export default function App({ data }) {
+  const { slideRequested } = useSignalTower();
   const firstSlide : Slide = data.slides.find( ( slide : Slide ) => slide.id === data.startingSlideID );
   const [currentSlide, setCurrentSlide ] = useState<Slide | null>( firstSlide );
-  const [nextSlide, setNextSlide ] = useState<Slide | null>( null );
+  const [nextSlide, setNextSlide ] = useState<Slide | null>( slideRequested.lastPayload );
   const [nextSlideFromDirection, setNextSlideFromDirection] = useState<FromDirections>( FromDirections.NONE );
   const [shouldSlidesTransition, setShouldSlidesTransition] = useState<boolean>( false );
-  const signalTower = useSignalTower();
 
   const nextSlideRequested = (slideID: string, fromDirection: FromDirections, isFromHistory: boolean = false) => {
     console.log( 'nextSlideRequested:', slideID, fromDirection, isFromHistory );
@@ -48,7 +48,7 @@ export default function App({ data }) {
   };
 
   const currentSlideTransitioned = () => {
-     setNextSlide( null );
+    setNextSlide( null );
     setCurrentSlide( nextSlide );
     setShouldSlidesTransition( false );
   };
@@ -66,7 +66,7 @@ export default function App({ data }) {
 
   // add listeners
   useEffect(()=> {
-    signalTower.slideRequested.add( nextSlideRequested );
+    slideRequested.add( nextSlideRequested );
 
     const handlePopState = ( event: PopStateEvent ) => {
       const slideID = event.state?.slideID;
@@ -79,8 +79,9 @@ export default function App({ data }) {
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
+      slideRequested.remove( nextSlideRequested );
     };
-  }, []);
+  }, [slideRequested]);
 
   const getLinkBars = () => <>
     { Boolean( currentSlide?.links?.left ) &&
