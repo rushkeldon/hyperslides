@@ -69,6 +69,11 @@ type SignalTowerMethods = {
   addSignal : ( name : string, options : SignalOptions ) => ExtendedSignal;
 };
 
+// the 'built-in' signals
+type SignalTowerSignals = {
+  hydrated : ExtendedSignal;
+}
+
 type SignalOptions = {
   logLevel? : number;
   initPayload? : any;
@@ -77,11 +82,17 @@ type SignalOptions = {
 
 export type SignalTower = {
   [ key : string ] : ExtendedSignal;
-} & SignalTowerMethods;
+} & SignalTowerMethods & SignalTowerSignals;
 
 let storedLoggingLevels : Record<string, number> = {};
 
-const reservedNames = [ 'setLogLevel', 'getState', 'hydrate', 'addSignal' ];
+const reservedNames = [
+  'addSignal',
+  'getState',
+  'hydrate',
+  'hydrated',
+  'setLogLevel'
+];
 const noop = () => null;
 
 
@@ -180,7 +191,8 @@ const signalTower = {
         logger.error( 'signalTower.addSignal error', e );
         throw new Error( `Failed to add signal: ${name}` );
       }
-    }
+    },
+    hydrated : createSignal( 'hydrated', 2, undefined, noop )
   }
 ;
 
