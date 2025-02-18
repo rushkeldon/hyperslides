@@ -23,13 +23,15 @@ export default function App({ data }) {
   const { slideRequested } = useSignalTower();
   const firstSlide : Slide = data.slides.find( ( slide : Slide ) => slide.id === data.startingSlideID );
   const [currentSlide, setCurrentSlide ] = useState<Slide | null>( firstSlide );
-  const [nextSlide, setNextSlide ] = useState<Slide | null>( slideRequested.lastPayload );
+  const [nextSlide, setNextSlide ] = useState<Slide | null>( null );
   const [nextSlideFromDirection, setNextSlideFromDirection] = useState<FromDirections>( FromDirections.NONE );
   const [shouldSlidesTransition, setShouldSlidesTransition] = useState<boolean>( false );
 
   const nextSlideRequested = (slideID: string, fromDirection: FromDirections, isFromHistory: boolean = false) => {
-    console.log( 'nextSlideRequested:', slideID, fromDirection, isFromHistory );
-
+    console.log( 'nextSlideRequested:' );
+    console.log( `  slideID : ${slideID}` );
+    console.log( `  fromDirection : ${fromDirection}` );
+    console.log( `  isFromHistory : ${isFromHistory}` );
     if (isFromHistory) {
       const previousSlide = history.state?.slideID;
       if (previousSlide) {
